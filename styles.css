@@ -1,0 +1,727 @@
+/* =========================================================
+   PERFUMES IMPORTADOS - Hoja de estilos
+   ========================================================= */
+
+/* ---------- Variables de diseño ---------- */
+:root {
+  --color-negro: #1C1C1C;
+  --color-blanco: #FFFFFF;
+  --color-dorado: #C9A24B;
+  --color-gris: #8A8A8A;
+  --color-gris-claro: #EFEFEF;
+  --color-gris-texto: #6B6B6B;   /* gris legible para textos chicos */
+
+  --font-marca: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-texto: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+
+  --header-alto: 96px;
+  --radio: 12px;
+  --gap: 40px;
+  --transicion: 0.3s ease;
+}
+
+/* ---------- Reset básico ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;   /* desplazamiento suave al usar el link "Catálogo" */
+}
+
+body {
+  font-family: var(--font-texto);
+  background: var(--color-blanco);
+  color: var(--color-negro);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* Asegura que el atributo hidden gane sobre display:flex (lo usa el buscador) */
+[hidden] {
+  display: none !important;
+}
+
+/* Oculta elementos visualmente pero los deja para lectores de pantalla */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--color-negro);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.header__inner {
+  /* Ancho completo: logo pegado a la izquierda, buscador a la derecha */
+  height: var(--header-alto);
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* ---------- Logo + nombre ---------- */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.brand__logo {
+  width: auto;
+  height: 68px;
+  /* El logo tiene fondo negro: "lighten" lo funde con el gris del header */
+  mix-blend-mode: lighten;
+}
+
+.brand__name {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-marca);
+  font-weight: 700;
+  font-size: 1.25rem;
+  line-height: 1.15;
+  letter-spacing: 0.08em;
+  color: var(--color-dorado);
+}
+
+/* ---------- Secciones (Hombres / Mujeres / Unisex) ---------- */
+.nav {
+  display: flex;
+  gap: 40px;
+}
+
+/* Sirve tanto para <button> (filtros) como para <a> (Catálogo) */
+.nav__link {
+  position: relative;
+  display: inline-block;
+  padding: 6px 0;
+  text-decoration: none;
+  font-family: var(--font-texto);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--color-blanco);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color var(--transicion);
+}
+
+/* Línea dorada debajo, aparece al pasar el mouse o si está activa */
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--color-dorado);
+  transform: scaleX(0);
+  transition: transform var(--transicion);
+}
+
+.nav__link:hover,
+.nav__link.is-active {
+  color: var(--color-dorado);
+}
+
+.nav__link:hover::after,
+.nav__link.is-active::after {
+  transform: scaleX(1);
+}
+
+
+/* =========================================================
+   CATÁLOGO
+   ========================================================= */
+.catalog {
+  max-width: 1280px;
+  margin: 0 auto;
+  /* Deja espacio para el header fijo */
+  padding: calc(var(--header-alto) + 64px) 40px 80px;
+}
+
+/* ---------- Grilla de productos ---------- */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--gap);
+}
+
+/* ---------- Tarjeta ---------- */
+.card {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 16px;
+  background: var(--color-blanco);
+  border-radius: var(--radio);
+  transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+/* Elevación sutil al pasar el mouse */
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+}
+
+/* Contenedor de la imagen: cuadrado y con esquinas redondeadas */
+.card__media {
+  flex: 0 0 45%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;            /* recorta el zoom de la imagen */
+  border-radius: var(--radio);
+  background: var(--color-gris-claro);
+}
+
+.card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* Zoom leve de la imagen */
+.card:hover .card__img {
+  transform: scale(1.05);
+}
+
+/* Texto centrado verticalmente (align-items: center en .card) */
+.card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.card__name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-negro);
+  overflow-wrap: break-word;
+}
+
+.card__price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-negro);
+}
+
+/* ---------- Mensajes ---------- */
+.no-results {
+  text-align: center;
+  padding: 60px 0;
+  color: var(--color-gris);
+}
+
+/* ---------- Título "Fragancias en stock" ---------- */
+.seccion-head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.seccion-titulo {
+  font-family: var(--font-marca);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-negro);
+}
+
+/* Línea dorada bajo el título (igual que en Catálogo) */
+.seccion-titulo::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 2px;
+  margin: 14px auto 0;
+  background: var(--color-dorado);
+}
+
+.seccion-bajada {
+  margin-top: 14px;
+  color: var(--color-gris-texto);
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   CATÁLOGO COMPLETO (sin precios ni fotos)
+   ========================================================= */
+.catalogo {
+  margin-top: 96px;
+  padding-top: 72px;
+  border-top: 1px solid var(--color-gris-claro);
+  /* Que el título no quede tapado por el header fijo al usar el link */
+  scroll-margin-top: calc(var(--header-alto) - 40px);
+}
+
+/* ---------- Título ---------- */
+.catalogo__head {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.catalogo__titulo {
+  font-family: var(--font-marca);
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-negro);
+}
+
+/* Línea dorada bajo el título */
+.catalogo__titulo::after {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 2px;
+  margin: 14px auto 0;
+  background: var(--color-dorado);
+}
+
+.catalogo__bajada {
+  margin-top: 14px;
+  color: var(--color-gris-texto);
+  font-size: 0.95rem;
+}
+
+/* ---------- Filtros ---------- */
+/* Marca primero, género después, centrados */
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px 24px;
+}
+
+.filtros__genero {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Chips de género */
+.chip {
+  padding: 9px 18px;
+  font-family: var(--font-texto);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--color-negro);
+  background: transparent;
+  border: 1px solid #D5D5D5;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color var(--transicion), background var(--transicion), color var(--transicion);
+}
+
+.chip:hover {
+  border-color: var(--color-dorado);
+}
+
+.chip.is-active {
+  color: var(--color-dorado);
+  background: var(--color-negro);
+  border-color: var(--color-negro);
+}
+
+/* Género que la marca elegida no tiene */
+.chip:disabled {
+  color: #BDBDBD;
+  border-color: #EBEBEB;
+  cursor: not-allowed;
+}
+
+/* Desplegable de marcas (flecha propia) */
+.select {
+  min-width: 230px;
+  padding: 11px 40px 11px 16px;
+  font-family: var(--font-texto);
+  font-size: 0.9rem;
+  color: var(--color-negro);
+  background: transparent url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238A8A8A' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center / 16px;
+  border: 1px solid #CFCFCF;
+  border-radius: 6px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color var(--transicion);
+}
+
+.select:focus {
+  border-color: var(--color-dorado);
+}
+
+/* Foco visible con teclado */
+.chip:focus-visible,
+.link-btn:focus-visible,
+.btn-outline:focus-visible,
+.nav__link:focus-visible {
+  outline: 2px solid var(--color-dorado);
+  outline-offset: 3px;
+}
+
+/* ---------- Contador + limpiar ---------- */
+.catalogo__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 28px 0 24px;
+  min-height: 24px;
+}
+
+.catalogo__contador {
+  font-size: 0.85rem;
+  color: var(--color-gris-texto);
+}
+
+.link-btn {
+  padding: 0;
+  font-family: var(--font-texto);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-negro);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--color-dorado);
+  cursor: pointer;
+  transition: color var(--transicion);
+}
+
+.link-btn:hover {
+  color: var(--color-dorado);
+}
+
+/* ---------- Grilla del catálogo ---------- */
+.catalogo__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+/* ---------- Tarjeta del catálogo ---------- */
+.cat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 22px 24px;
+  background: var(--color-blanco);
+  border: 1px solid #ECECEC;
+  border-radius: var(--radio);
+  transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+}
+
+.cat-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(201, 162, 75, 0.5);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+}
+
+.cat-card__nombre {
+  font-family: var(--font-marca);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-negro);
+  overflow-wrap: break-word;
+}
+
+.cat-card__meta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gris-texto);
+}
+
+/* Fila inferior: fragancia + tamaños (queda pegada abajo) */
+.cat-card__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 12px;
+}
+
+/* Etiqueta dorada de fragancia (EDP, Parfum, Elixir...) */
+.tag-fragancia {
+  padding: 4px 9px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-negro);
+  background: var(--color-dorado);
+  border-radius: 4px;
+}
+
+/* Chips de tamaño */
+.chip-ml {
+  padding: 3px 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-negro);
+  border: 1px solid #DADADA;
+  border-radius: 999px;
+}
+
+/* ---------- Sin resultados ---------- */
+.catalogo__vacio {
+  text-align: center;
+  padding: 56px 16px;
+  color: var(--color-gris-texto);
+}
+
+.catalogo__vacio-titulo {
+  font-family: var(--font-marca);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-negro);
+  margin-bottom: 6px;
+}
+
+.catalogo__vacio .btn-outline {
+  margin-top: 24px;
+}
+
+/* ---------- Ver más ---------- */
+.catalogo__mas {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.btn-outline {
+  padding: 13px 36px;
+  font-family: var(--font-texto);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-negro);
+  background: transparent;
+  border: 1px solid var(--color-negro);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background var(--transicion), color var(--transicion);
+}
+
+.btn-outline:hover {
+  color: var(--color-dorado);
+  background: var(--color-negro);
+}
+
+/* =========================================================
+   BOTÓN FLOTANTE DE WHATSAPP
+   ========================================================= */
+.whatsapp-btn {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #25D366;            /* verde oficial de WhatsApp, reconocible */
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+.whatsapp-btn svg {
+  width: 30px;
+  height: 30px;
+  fill: var(--color-blanco);
+}
+
+.whatsapp-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
+}
+
+.whatsapp-btn:focus-visible {
+  outline: 2px solid var(--color-dorado);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+/* ---------- Tablet: 2 columnas ---------- */
+@media (max-width: 1024px) {
+  .nav {
+    gap: 32px;
+  }
+
+  .product-grid,
+  .catalogo__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .product-grid {
+    gap: 32px;
+  }
+}
+
+/* ---------- Celular: 1 columna, secciones debajo del logo ---------- */
+@media (max-width: 640px) {
+  :root {
+    --header-alto: 124px;
+  }
+
+  .header__inner {
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 16px;
+    gap: 10px;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 18px;
+  }
+
+  .nav__link {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+
+  .brand__logo {
+    height: 50px;
+  }
+
+  .brand__name {
+    font-size: 1.05rem;
+  }
+
+  .catalog {
+    padding: calc(var(--header-alto) + 32px) 16px 56px;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  /* Imagen arriba, texto debajo */
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 0 0 12px;
+  }
+
+  .card__media {
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .card__info {
+    text-align: center;
+  }
+
+  /* Catálogo: filtros apilados y 1 columna */
+  .catalogo {
+    margin-top: 64px;
+    padding-top: 48px;
+  }
+
+  .catalogo__titulo,
+  .seccion-titulo {
+    font-size: 2rem;
+  }
+
+  .seccion-head {
+    margin-bottom: 32px;
+  }
+
+  .whatsapp-btn {
+    right: 16px;
+    bottom: 16px;
+    width: 52px;
+    height: 52px;
+  }
+
+  .whatsapp-btn svg {
+    width: 27px;
+    height: 27px;
+  }
+
+  .filtros {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+  }
+
+  .filtros__genero {
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* Más compactos para que entren los 4 en una fila */
+  .chip {
+    padding: 8px 14px;
+    font-size: 0.78rem;
+  }
+
+  .select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catalogo__grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .catalogo__barra {
+    margin: 22px 0 18px;
+  }
+}
+
+/* Respeta a quienes prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .card,
+  .card__img,
+  .cat-card {
+    transition: none;
+  }
+}
